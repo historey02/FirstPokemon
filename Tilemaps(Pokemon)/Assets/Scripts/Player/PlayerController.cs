@@ -15,13 +15,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Only checks for input if the player is not already moving
         if (!isMoving)
         {
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
 
+            //prevents diagoncal movement
             if(input.x != 0) { input.y = 0; }
 
+            //Only sets the target position and calls the Move() if the input doesn't equal 0
             if (input != Vector2.zero)
             {
                 var targetPosition = transform.position;
@@ -36,7 +39,8 @@ public class PlayerController : MonoBehaviour
     IEnumerator Move(Vector3 targetPos)
     {
         isMoving = true;
-        isMoving = true;
+        //while the player is approaching but has not yet reached the target position
+        //Mathf.Epsilon is the smallest float after 0
         while ((targetPos - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPos, Time.deltaTime * moveSpeed);
